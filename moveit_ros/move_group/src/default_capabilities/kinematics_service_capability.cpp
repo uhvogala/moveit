@@ -162,7 +162,7 @@ bool MoveGroupKinematicsService::computeIKService(moveit_msgs::GetPositionIK::Re
                           req.ik_request.avoid_collisions ?
                               static_cast<const planning_scene::PlanningSceneConstPtr&>(ls).get() :
                               nullptr,
-                          kset.empty() ? nullptr : &kset, _1, _2, _3));
+                          kset.empty() ? nullptr : &kset, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3));
   }
   else
   {

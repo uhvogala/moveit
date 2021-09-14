@@ -137,7 +137,7 @@ bool MoveGroupCartesianPathService::computeService(moveit_msgs::GetCartesianPath
             constraint_fn = boost::bind(
                 &isStateValid,
                 req.avoid_collisions ? static_cast<const planning_scene::PlanningSceneConstPtr&>(*ls).get() : nullptr,
-                kset->empty() ? nullptr : kset.get(), _1, _2, _3);
+                kset->empty() ? nullptr : kset.get(), boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3);
           }
           bool global_frame = !robot_state::Transforms::sameFrame(link_name, req.header.frame_id);
           ROS_INFO_NAMED(getName(),

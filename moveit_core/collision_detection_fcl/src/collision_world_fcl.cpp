@@ -63,7 +63,7 @@ CollisionWorldFCL::CollisionWorldFCL() : CollisionWorld()
   manager_.reset(m);
 
   // request notifications about changes to new world
-  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, _1, _2));
+  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, boost::placeholders::_1, boost::placeholders::_2));
 }
 
 CollisionWorldFCL::CollisionWorldFCL(const WorldPtr& world) : CollisionWorld(world)
@@ -73,7 +73,7 @@ CollisionWorldFCL::CollisionWorldFCL(const WorldPtr& world) : CollisionWorld(wor
   manager_.reset(m);
 
   // request notifications about changes to new world
-  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, _1, _2));
+  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, boost::placeholders::_1, boost::placeholders::_2));
   getWorld()->notifyObserverAllObjects(observer_handle_, World::CREATE);
 }
 
@@ -90,7 +90,7 @@ CollisionWorldFCL::CollisionWorldFCL(const CollisionWorldFCL& other, const World
   // manager_->update();
 
   // request notifications about changes to new world
-  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, _1, _2));
+  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, boost::placeholders::_1, boost::placeholders::_2));
 }
 
 CollisionWorldFCL::~CollisionWorldFCL()
@@ -249,7 +249,7 @@ void CollisionWorldFCL::setWorld(const WorldPtr& world)
   CollisionWorld::setWorld(world);
 
   // request notifications about changes to new world
-  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, _1, _2));
+  observer_handle_ = getWorld()->addObserver(boost::bind(&CollisionWorldFCL::notifyObjectChange, this, boost::placeholders::_1, boost::placeholders::_2));
 
   // get notifications any objects already in the new world
   getWorld()->notifyObserverAllObjects(observer_handle_, World::CREATE);

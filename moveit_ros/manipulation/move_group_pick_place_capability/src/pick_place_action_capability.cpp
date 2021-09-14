@@ -54,13 +54,13 @@ void move_group::MoveGroupPickPlaceAction::initialize()
 
   // start the pickup action server
   pickup_action_server_.reset(new actionlib::SimpleActionServer<moveit_msgs::PickupAction>(
-      root_node_handle_, PICKUP_ACTION, boost::bind(&MoveGroupPickPlaceAction::executePickupCallback, this, _1), false));
+      root_node_handle_, PICKUP_ACTION, boost::bind(&MoveGroupPickPlaceAction::executePickupCallback, this, boost::placeholders::_1), false));
   pickup_action_server_->registerPreemptCallback(boost::bind(&MoveGroupPickPlaceAction::preemptPickupCallback, this));
   pickup_action_server_->start();
 
   // start the place action server
   place_action_server_.reset(new actionlib::SimpleActionServer<moveit_msgs::PlaceAction>(
-      root_node_handle_, PLACE_ACTION, boost::bind(&MoveGroupPickPlaceAction::executePlaceCallback, this, _1), false));
+      root_node_handle_, PLACE_ACTION, boost::bind(&MoveGroupPickPlaceAction::executePlaceCallback, this, boost::placeholders::_1), false));
   place_action_server_->registerPreemptCallback(boost::bind(&MoveGroupPickPlaceAction::preemptPlaceCallback, this));
   place_action_server_->start();
 }
@@ -262,7 +262,7 @@ void move_group::MoveGroupPickPlaceAction::executePickupCallbackPlanAndExecute(
   opt.before_execution_callback_ = boost::bind(&MoveGroupPickPlaceAction::startPickupExecutionCallback, this);
 
   opt.plan_callback_ =
-      boost::bind(&MoveGroupPickPlaceAction::planUsingPickPlacePickup, this, boost::cref(*goal), &action_res, _1);
+      boost::bind(&MoveGroupPickPlaceAction::planUsingPickPlacePickup, this, boost::cref(*goal), &action_res, boost::placeholders::_1);
   if (goal->planning_options.look_around && context_->plan_with_sensing_)
   {
     opt.plan_callback_ = boost::bind(&plan_execution::PlanWithSensing::computePlan, context_->plan_with_sensing_.get(),
@@ -292,7 +292,7 @@ void move_group::MoveGroupPickPlaceAction::executePlaceCallbackPlanAndExecute(co
   opt.replan_delay_ = goal->planning_options.replan_delay;
   opt.before_execution_callback_ = boost::bind(&MoveGroupPickPlaceAction::startPlaceExecutionCallback, this);
   opt.plan_callback_ =
-      boost::bind(&MoveGroupPickPlaceAction::planUsingPickPlacePlace, this, boost::cref(*goal), &action_res, _1);
+      boost::bind(&MoveGroupPickPlaceAction::planUsingPickPlacePlace, this, boost::cref(*goal), &action_res, boost::placeholders::_1);
   if (goal->planning_options.look_around && context_->plan_with_sensing_)
   {
     opt.plan_callback_ = boost::bind(&plan_execution::PlanWithSensing::computePlan, context_->plan_with_sensing_.get(),

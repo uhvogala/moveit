@@ -258,7 +258,7 @@ robot_model::SolverAllocatorFn KinematicsPluginLoader::getLoaderFunction()
   moveit::tools::Profiler::ScopedBlock prof_block("KinematicsPluginLoader::getLoaderFunction");
 
   if (loader_)
-    return boost::bind(&KinematicsLoaderImpl::allocKinematicsSolverWithCache, loader_.get(), _1);
+    return boost::bind(&KinematicsLoaderImpl::allocKinematicsSolverWithCache, loader_.get(), boost::placeholders::_1);
 
   rdf_loader::RDFLoader rml(robot_description_);
   robot_description_ = rml.getRobotDescription();
@@ -447,6 +447,6 @@ robot_model::SolverAllocatorFn KinematicsPluginLoader::getLoaderFunction(const s
         new KinematicsLoaderImpl(robot_description_, possible_kinematics_solvers, search_res, iksolver_to_tip_links));
   }
 
-  return boost::bind(&KinematicsPluginLoader::KinematicsLoaderImpl::allocKinematicsSolverWithCache, loader_.get(), _1);
+  return boost::bind(&KinematicsPluginLoader::KinematicsLoaderImpl::allocKinematicsSolverWithCache, loader_.get(), boost::placeholders::_1);
 }
 }  // namespace kinematics_plugin_loader
